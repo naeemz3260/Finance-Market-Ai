@@ -1,1 +1,250 @@
 html code ...
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FinanceMarket AI — Real-Time Market Intelligence</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="noise"></div>
+<div class="bg-lines"></div>
+
+<!-- ═══ HEADER ═══ -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo-wrap">
+      <div class="logo-mark">
+        <span class="lm-1"></span>
+        <span class="lm-2"></span>
+        <span class="lm-3"></span>
+      </div>
+      <div>
+        <div class="logo-name">FinanceMarket<span class="logo-ai-tag">AI</span></div>
+        <div class="logo-sub">Real-Time Intelligence Platform</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a class="nav-link active" onclick="nav('home',this)">Home</a>
+      <a class="nav-link" onclick="nav('markets',this)">Markets</a>
+      <a class="nav-link" onclick="nav('predictions',this)">Predictions</a>
+      <a class="nav-link" onclick="nav('news',this)">Intelligence</a>
+      <a class="nav-link" onclick="nav('heatmap',this)">Heatmap</a>
+    </nav>
+    <div class="header-right">
+      <div class="live-indicator"><span class="pulse"></span>LIVE</div>
+      <div class="clock-box" id="clock">--:--:--</div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ HOME ═══ -->
+<div id="page-home" class="page active">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-eyebrow">Web Data Unlocked Hackathon 2026</div>
+    <h1 class="hero-title">
+      Finance <span class="hero-accent"> Market </span><br/>
+      <span class="hero-sub-title">AI Intelligence Agent</span>
+    </h1>
+    <p class="hero-desc">
+      Track global markets in real-time. Detect trends before they happen.<br/>
+      AI-powered signals for smarter financial decisions.
+    </p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="openAgent()">
+        <span>◆</span> Ask AI Agent
+      </button>
+      <button class="btn-secondary" onclick="nav('markets', document.querySelector('[data-page=markets]'))">
+        ↗ Live Market Feed
+      </button>
+    </div>
+    <div class="hero-stats">
+      <div class="hs"><span class="hs-val" id="hs-markets">20+</span><span class="hs-label">Markets Tracked</span></div>
+      <div class="hs-div"></div>
+      <div class="hs"><span class="hs-val">Real-Time</span><span class="hs-label">Data Updates</span></div>
+      <div class="hs-div"></div>
+      <div class="hs"><span class="hs-val">AI-Powered</span><span class="hs-label">Predictions</span></div>
+      <div class="hs-div"></div>
+      <div class="hs"><span class="hs-val">24/7</span><span class="hs-label">Intelligence</span></div>
+    </div>
+  </section>
+
+  <!-- Quick Market Strip -->
+  <section class="ticker-strip">
+    <div class="ticker-track" id="ticker-track"></div>
+  </section>
+
+  <!-- Live Market Cards -->
+  <section class="section-wrap">
+    <div class="section-head">
+      <h2 class="section-title">Live Market Feed</h2>
+      <span class="section-badge">Updated just now</span>
+    </div>
+    <div class="market-grid" id="market-grid"></div>
+  </section>
+
+  <!-- AI Agent Quick Box -->
+  <section class="section-wrap">
+    <div class="agent-box">
+      <div class="agent-box-left">
+        <div class="agent-label">◆ AI INTELLIGENCE AGENT</div>
+        <h3 class="agent-title">Ask anything about the market</h3>
+        <p class="agent-desc">Powered by real-time data and machine learning models trained on global financial patterns.</p>
+        <div class="agent-chips">
+          <button class="chip" onclick="quickAsk('Should I buy Bitcoin now?')">Should I buy Bitcoin now?</button>
+          <button class="chip" onclick="quickAsk('Is Gold a safe investment?')">Is Gold safe?</button>
+          <button class="chip" onclick="quickAsk('What is the market trend today?')">Market trend today?</button>
+          <button class="chip" onclick="quickAsk('USD/PKR forecast this week?')">USD/PKR forecast?</button>
+        </div>
+      </div>
+      <div class="agent-box-right">
+        <div class="agent-input-row">
+          <input id="hero-ask" type="text" class="agent-input" placeholder="e.g. Should I buy Gold today?"/>
+          <button class="agent-send" onclick="heroAsk()">Ask AI ↗</button>
+        </div>
+        <div class="agent-output" id="hero-output">
+          <div class="ao-placeholder">
+            <span class="ao-icon">🤖</span>
+            <span>AI Agent is ready. Ask a question above.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ═══ MARKETS ═══ -->
+<div id="page-markets" class="page">
+  <div class="page-inner">
+    <div class="section-head">
+      <h2 class="section-title">Global Markets — Live Data</h2>
+      <div class="filter-pills">
+        <button class="pill active" onclick="filterMarket('all',this)">All</button>
+        <button class="pill" onclick="filterMarket('crypto',this)">Crypto</button>
+        <button class="pill" onclick="filterMarket('stocks',this)">Stocks</button>
+        <button class="pill" onclick="filterMarket('commodities',this)">Commodities</button>
+        <button class="pill" onclick="filterMarket('forex',this)">Forex</button>
+      </div>
+    </div>
+    <div class="markets-full-grid" id="markets-full-grid"></div>
+    <div class="chart-panel">
+      <div class="cp-head">
+        <h3 class="card-title-sm">24h Price Movement Chart</h3>
+        <select class="chart-select" id="chart-select" onchange="updateMainChart()">
+          <option value="bitcoin">Bitcoin</option>
+          <option value="gold">Gold</option>
+          <option value="apple">Apple</option>
+          <option value="sp500">S&P 500</option>
+        </select>
+      </div>
+      <canvas id="main-chart" height="80"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PREDICTIONS ═══ -->
+<div id="page-predictions" class="page">
+  <div class="page-inner">
+    <div class="section-head">
+      <h2 class="section-title">AI Prediction Engine</h2>
+      <span class="section-badge">ML-Powered Forecasts</span>
+    </div>
+    <div class="pred-grid" id="pred-grid"></div>
+    <div class="pred-chart-row">
+      <div class="pred-chart-card">
+        <h3 class="card-title-sm">7-Day Forecast Model</h3>
+        <canvas id="pred-chart" height="120"></canvas>
+      </div>
+      <div class="pred-chart-card">
+        <h3 class="card-title-sm">Volatility Analysis</h3>
+        <canvas id="vol-chart" height="120"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ NEWS ═══ -->
+<div id="page-news" class="page">
+  <div class="page-inner">
+    <div class="section-head">
+      <h2 class="section-title">Market Intelligence Feed</h2>
+      <span class="section-badge">AI-Curated News</span>
+    </div>
+    <div class="news-layout">
+      <div class="news-main" id="news-main"></div>
+      <div class="news-sidebar">
+        <div class="sidebar-card">
+          <h4 class="sidebar-title">Market Sentiment</h4>
+          <canvas id="sentiment-chart" height="180"></canvas>
+        </div>
+        <div class="sidebar-card">
+          <h4 class="sidebar-title">AI Impact Scores</h4>
+          <div id="impact-scores"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ HEATMAP ═══ -->
+<div id="page-heatmap" class="page">
+  <div class="page-inner">
+    <div class="section-head">
+      <h2 class="section-title">Market Heatmap</h2>
+      <span class="section-badge">Real-Time Performance</span>
+    </div>
+    <div class="heatmap-wrap" id="heatmap-wrap"></div>
+    <div class="heatmap-legend">
+      <span class="hl-item"><span class="hl-dot" style="background:#00c853"></span>Strong Buy (+5%)</span>
+      <span class="hl-item"><span class="hl-dot" style="background:#69f0ae"></span>Buy (+2%)</span>
+      <span class="hl-item"><span class="hl-dot" style="background:#ffd740"></span>Neutral</span>
+      <span class="hl-item"><span class="hl-dot" style="background:#ff6d00"></span>Sell (-2%)</span>
+      <span class="hl-item"><span class="hl-dot" style="background:#ff1744"></span>Strong Sell (-5%)</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ AI AGENT MODAL ═══ -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeAgent()"></div>
+<div class="agent-modal" id="agent-modal">
+  <div class="am-header">
+    <div class="am-title">
+      <span class="am-dot"></span>
+      FinanceMarket AI Agent
+    </div>
+    <button class="am-close" onclick="closeAgent()">✕</button>
+  </div>
+  <div class="am-messages" id="am-messages">
+    <div class="am-msg bot">
+      <div class="am-msg-icon">◆</div>
+      <div class="am-msg-text">Hello! I'm your FinanceMarket AI Agent. I analyze real-time market data and provide intelligent financial insights. What would you like to know?</div>
+    </div>
+  </div>
+  <div class="am-input-row">
+    <input type="text" id="am-input" class="am-input" placeholder="Ask about any market, asset, or trend..." onkeydown="if(event.key==='Enter')sendAgentMsg()"/>
+    <button class="am-send" onclick="sendAgentMsg()">↗</button>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo-name" style="font-size:1rem">FinanceMarket<span class="logo-ai-tag">AI</span></div>
+      <div class="footer-desc">Real-Time Financial Intelligence Platform</div>
+    </div>
+    <div class="footer-mid">Web Data Unlocked Hackathon 2026 · Bright Data × LabLab</div>
+    <div class="footer-team">Team: Naeem · Sonia · Fiza · Quratulain · Javeria</div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
