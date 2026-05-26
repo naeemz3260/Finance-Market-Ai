@@ -1,1 +1,44 @@
-naeem work
+{
+  "market": [
+    {
+      "id": 1,
+      "asset": "Bitcoin",
+      "category": "crypto",
+      "current_price": 108000,
+      "change_percent": 3.2,
+      "signal": "BUY",
+      "risk": "Medium",
+      "history": [102000, 104000, 106000, 108000]
+    },
+    {
+      "id": 2,
+      "asset": "Gold",
+      "category": "commodity",
+      "current_price": 3350,
+      "change_percent": -1.1,
+      "signal": "HOLD",
+      "risk": "Low",
+      "history": [3300, 3320, 3340, 3350]
+    },
+    {
+      "id": 3,
+      "asset": "Apple",
+      "category": "stock",
+      "current_price": 209,
+      "change_percent": 1.5,
+      "signal": "WATCH",
+      "risk": "Medium",
+      "history": [198, 202, 205, 209]
+    },
+    {
+      "id": 4,
+      "asset": "Ethereum",
+      "category": "crypto",
+      "current_price": 4200,
+      "change_percent": 2.7,
+      "signal": "BUY",
+      "risk": "High",
+      "history": [3900, 4000, 4100, 4200]
+    }
+  ]
+}
