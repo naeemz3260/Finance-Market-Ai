@@ -9,7 +9,7 @@ app = Flask(
 )
 
 # -------------------------
-# Home Route (Dashboard UI)
+# Home Route
 # -------------------------
 @app.route("/")
 def home():
@@ -17,23 +17,24 @@ def home():
 
 
 # -------------------------
-# API Route (Send Data to Frontend)
+# API Route
 # -------------------------
 @app.route("/data")
 def data():
-    file_path = "prices.json"
+    try:
+        base_dir = os.path.dirname(__file__)
+        file_path = os.path.join(base_dir, "../data/prices.json")
 
-    # If file doesn't exist, return empty data
-    if not os.path.exists(file_path):
-        return jsonify({"error": "prices.json not found"})
-
-    with open(file_path, "r") as file:
-        try:
+        with open(file_path, "r") as file:
             prices = json.load(file)
-        except json.JSONDecodeError:
-            prices = []
 
-    return jsonify(prices)
+        return jsonify(prices)
+
+    except FileNotFoundError:
+        return jsonify({"error": "prices.json not found"}), 404
+
+    except json.JSONDecodeError:
+        return jsonify({"error": "Invalid JSON format"}), 500
 
 
 # -------------------------
@@ -41,12 +42,21 @@ def data():
 # -------------------------
 @app.route("/status")
 def status():
-    return jsonify({"status": "running", "app": "Finance AI Agent"})
+    return jsonify({
+        "status": "running",
+        "app": "Finance Market AI"
+    })
 
 
 # -------------------------
-# Run Server
+# Vercel Entry Point
+# -------------------------
+app = app
+
+
+# -------------------------
+# Run Locally
 # -------------------------
 if __name__ == "__main__":
-    print("🚀 Starting Finance AI Agent Server...")
-    app.run(debug=True)
+    print("🚀 Starting Finance Market AI...")
+    app.run(host="0.0.0.0", port=5000, debug=True)
